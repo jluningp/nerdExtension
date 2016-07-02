@@ -3,7 +3,6 @@ function replaceText(from, to) {
   document.body.innerHTML = lowercaseReplace(from, to)
   //document.body.innerHTML = document.body.innerHTML.replace(new RegExp(from, 'g'), to);
 }
-
 function escapeText(str) {
     // http://kevin.vanzonneveld.net
     // +   original by: booeyOH
@@ -15,7 +14,6 @@ function escapeText(str) {
 function lowercaseReplace(from, to) {
     return document.body.innerHTML.replace( new RegExp( "(" + escapeText(from) + ")" , 'gi' ), to)
 }
-
 var dict =
 {
     "union-find": "work: O(log(n))",
@@ -33,9 +31,8 @@ var dict =
     "dfs": "work: O(|E|)",
     "depth-first search": "work: O(|E|)"
 }
-
+var keys = [];
 function replaceAll() {
-  var keys = [];
   for (var key in dict) {
     if (dict.hasOwnProperty(key)) {
       keys.push(key);
@@ -43,15 +40,27 @@ function replaceAll() {
   }
   replaceAllKeys(keys)
 }
-
-
 function replaceAllKeys(keys) {
    for(var i = 0; i < keys.length; i++) {
       var toSet = keys[i] + " <b>(" + dict[keys[i]] + ")</b>";
       replaceText(keys[i], toSet);
    }
 }
-
 replaceText("donald trump", "Donald Drumpf")
-
 replaceAll()
+console.log("trumpf")
+var recognition = new webkitSpeechRecognition();
+//recognition.continuous = true
+recognition.onresult = function(event) {
+  var transcript = event.results[0][0].transcript.toLowerCase()
+  for(var i = 0; i < keys.length; i++) {
+     var s = transcript.search(keys[i])
+     if (s != -1)
+     {
+        alert(dict[keys[i]] + "     " + transcript)
+     }else{
+        //alert(transcript)
+     }
+  }
+}
+recognition.start();
